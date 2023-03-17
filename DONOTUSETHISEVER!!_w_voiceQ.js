@@ -105,7 +105,7 @@ async function main() {
         console.log("Dimensions: ", dimensions);
         console.log("Physical laws: ", laws);
         console.log("Fundamental particles: ", particles);
-		exec('espeak -v de+f1 "The key turned, a doorway has been opened" && espeak -v en+f1 "The key turned, a doorway has been opened"');
+                exec('espeak -v de+f1 "The key turned, a doorway has been opened" && espeak -v en+f1 "The key turned, a doorway has been opened"');
 
         // Ask the user if they want to swap to the new universe
         askQuestion("Do you want to swap to the new universe? (y/n)").then((swap) => {
@@ -118,13 +118,13 @@ async function main() {
             exec('espeak -v de+f1 "universe swapped" && espeak -v en+f1 "universe swapped"');
           } else {
             console.log("You chose not to swap to the new universe.");
-			exec('espeak -v de+f1 "You chose not to swap to the new universe" && espeak -v en+f1 "You chose not to swap to the new universe"');
+                        exec('espeak -v de+f1 "You chose not to swap to the new universe" && espeak -v en+f1 "You chose not to swap to the new universe"');
           }
         });
 
       } else {
         console.log("The key failed to turn. Please try again.");
-		exec('espeak -v de+f1 "The key failed to turn. Please try again." && espeak -v en+f1 "The key failed to turn. Please try again."');
+                exec('espeak -v de+f1 "The key failed to turn. Please try again." && espeak -v en+f1 "The key failed to turn. Please try again."');
       }
     }
 
@@ -134,6 +134,7 @@ async function main() {
         turnTheKey();
       } else {
         console.log("The doorway to the new universe remains closed.");
+                exec('espeak -v de+f1 "The doorway to the new universe remains closed." && espeak -v en+f1 "The doorway to the new universe remains closed."');
       }
     });
   } catch (error) {
