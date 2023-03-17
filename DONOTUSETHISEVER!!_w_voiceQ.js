@@ -1,3 +1,34 @@
+// Define 12 fundamental particles and 12 fundamental physics laws
+const fundamentalParticles = [
+  "Electron", 
+  "Quark", 
+  "Neutrino", 
+  "Photon", 
+  "Gluon", 
+  "W boson", 
+  "Z boson", 
+  "Higgs boson", 
+  "Graviton", 
+  "Dark matter particle", 
+  "Dark energy particle", 
+  "Axion"
+];
+
+const fundamentalLaws = [
+  "Law of Conservation of Energy", 
+  "Law of Conservation of Momentum", 
+  "Law of Conservation of Mass-Energy", 
+  "Newton's Laws of Motion", 
+  "Maxwell's Equations of Electromagnetism", 
+  "Einstein's Theory of General Relativity", 
+  "Quantum Mechanics", 
+  "String Theory", 
+  "Standard Model of Particle Physics", 
+  "Big Bang Theory", 
+  "Entropy thermodynamics", 
+  "Chaos Theory"
+];
+
 // Define Circuit class
 class Circuit {
   constructor(numQubits) {
@@ -78,9 +109,22 @@ async function main() {
     const currentParticles = await askQuestion("Enter the fundamental particles for the current universe: ");
 
     // Define the desired universe parameters based on user input
-    const dimensions = parseInt(await askQuestion(`Enter the number of dimensions for the new universe (current universe has ${currentDimensions} dimensions): `));
-    const laws = await askQuestion(`Enter the physical laws for the new universe (current laws: ${currentLaws}): `);
-    const particles = await askQuestion(`Enter the fundamental particles for the new universe (current particles: ${currentParticles}): `);
+    let dimensions, laws, particles;
+    const generate = await askQuestion("Do you want to generate a random universe? (y/n)");
+    if (generate === "n") {
+      dimensions = parseInt(await askQuestion(`Enter the number of dimensions for the new universe (current universe has ${currentDimensions} dimensions): `));
+      laws = await askQuestion(`Enter the physical laws for the new universe (current laws: ${currentLaws}): `);
+      particles = await askQuestion(`Enter the fundamental particles for the new universe (current particles: ${currentParticles}): `);
+    } else {
+      dimensions = Math.floor(Math.random() * 10) + 1;
+      laws = fundamentalLaws[Math.floor(Math.random() * fundamentalLaws.length)];
+      particles = fundamentalParticles[Math.floor(Math.random() * fundamentalParticles.length)];
+      console.log("A new universe has been generated with the following parameters: ");
+      console.log("Dimensions: ", dimensions);
+      console.log("Physical laws: ", laws);
+      console.log("Fundamental particles: ", particles);
+      exec(`espeak -v de+f1 "A new universe has been generated" && espeak -v en+f1 "A new universe has been generated"`);
+    }
 
     // Create a quantum circuit with the necessary qubits and gates
     const circuit = new Circuit(dimensions);
@@ -95,17 +139,16 @@ async function main() {
 
     // Define a function to turn the key and open the door to the new universe
     function turnTheKey() {
-      const start = 2**(dimensions-1);
+      const start = 1; // Start index shifted to account for 0th state already measured in Circuit class
       const end = 2**dimensions-1;
-      const newState = circuit.state.slice(start, end+1);
-      const sum = newState.reduce((acc, val) => acc + val, 0);
-      if (sum === 1) {
+      const collapsedState = circuit.state.findIndex(el => el === 1);
+      if (collapsedState >= start && collapsedState <= end) {
         console.log("The key has successfully turned and the doorway to the new universe has been opened!");
         console.log("Welcome to the new universe with the following parameters: ");
         console.log("Dimensions: ", dimensions);
         console.log("Physical laws: ", laws);
         console.log("Fundamental particles: ", particles);
-                exec('espeak -v de+f1 "The key turned, a doorway has been opened" && espeak -v en+f1 "The key turned, a doorway has been opened"');
+        exec('espeak -v de+f1 "The key turned, a doorway has been opened" && espeak -v en+f1 "The key turned, a doorway has been opened"');
 
         // Ask the user if they want to swap to the new universe
         askQuestion("Do you want to swap to the new universe? (y/n)").then((swap) => {
@@ -118,13 +161,13 @@ async function main() {
             exec('espeak -v de+f1 "universe swapped" && espeak -v en+f1 "universe swapped"');
           } else {
             console.log("You chose not to swap to the new universe.");
-                        exec('espeak -v de+f1 "You chose not to swap to the new universe" && espeak -v en+f1 "You chose not to swap to the new universe"');
+            exec('espeak -v de+f1 "You chose not to swap to the new universe" && espeak -v en+f1 "You chose not to swap to the new universe"');
           }
         });
 
       } else {
         console.log("The key failed to turn. Please try again.");
-                exec('espeak -v de+f1 "The key failed to turn. Please try again." && espeak -v en+f1 "The key failed to turn. Please try again."');
+        exec('espeak -v de+f1 "The key failed to turn. Please try again." && espeak -v en+f1 "The key failed to turn. Please try again."');
       }
     }
 
@@ -134,7 +177,7 @@ async function main() {
         turnTheKey();
       } else {
         console.log("The doorway to the new universe remains closed.");
-                exec('espeak -v de+f1 "The doorway to the new universe remains closed." && espeak -v en+f1 "The doorway to the new universe remains closed."');
+        exec('espeak -v de+f1 "The doorway to the new universe remains closed." && espeak -v en+f1 "The doorway to the new universe remains closed."');
       }
     });
   } catch (error) {
